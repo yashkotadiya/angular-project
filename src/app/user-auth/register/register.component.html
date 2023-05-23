@@ -1,0 +1,13 @@
+<p>register works!</p>
+
+<form #basicForm="ngForm" (ngSubmit)="getData(basicForm.value)">
+   <input type="text" ngModel name="user" placeholder="enter user name">
+   <br><br>
+   <input type="text" ngModel name="email" placeholder="enter user email">
+   <br><br>
+   <input type="text" ngModel name="password" placeholder="enter user password">
+   <br><br>
+
+   <button type="submit">register</button>
+
+</form>
