@@ -1,0 +1,18 @@
+name: Auto Deploy to My PC
+
+on:
+  push:
+    branches:
+      - main  # or your deployment branch
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy files to D:/test
+        run: |
+          robocopy . D:\test /MIR /XD .git
