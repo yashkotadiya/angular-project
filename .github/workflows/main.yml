@@ -1,18 +1,30 @@
-name: Auto Deploy to My PC
+name: Deploy Angular App to Local Machine
 
 on:
   push:
     branches:
-      - main  # or your deployment branch
+      - master  # Or whichever branch you want to trigger deployment
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: self-hosted  # This uses your registered runner
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      - name: Copy files to D:/test
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Set to your Angular project's required Node version
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Angular Project
+        run: npm run build -- --output-path=dist
+
+      - name: Deploy to D:/test
         run: |
-          robocopy . D:\test /MIR /XD .git
+          if not exist "D:\test" mkdir "D:\test"
+          xcopy /E /I /Y dist\* D:\test\
