@@ -1,9 +1,7 @@
 name: Deploy Angular App to Local Machine
 
 on:
-  push:
-    branches:
-      - master  # Trigger on push to master
+  workflow_dispatch
 
 jobs:
   deploy:
