@@ -1,20 +1,34 @@
 name: Deploy Angular App to Local Machine
 
 on:
-  workflow_dispatch
+  workflow_dispatch  # Manual trigger only
 
 jobs:
   deploy:
-    runs-on: self-hosted  # Your registered self-hosted runner (Windows)
+    runs-on: self-hosted
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Or whatever version your Angular app uses
+
+      - name: Install dependencies
+        run: npm install
+        shell: powershell
+
+      - name: Build Angular App
+        run: npm run build --if-present
+        shell: powershell
+
       - name: Deploy to D:/test
-        shell: powershell  # Use PowerShell Core (or use `powershell` for Windows PowerShell)
+        shell: powershell
         run: |
+          $distPath = Get-ChildItem -Path ".\dist" -Directory | Select-Object -First 1
           if (-Not (Test-Path "D:\test")) {
             New-Item -ItemType Directory -Path "D:\test"
           }
-          Copy-Item -Path ".\dist\*"*
+          Copy-Item -Path ".\dist\$($distPath.Name)\*" -Destination "D:\test" -Recurse -Force
