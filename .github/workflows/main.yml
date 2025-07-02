@@ -3,19 +3,20 @@ name: Deploy Angular App to Local Machine
 on:
   push:
     branches:
-      - master  # Or whichever branch you want to trigger deployment
+      - master  # Trigger on push to master
 
 jobs:
   deploy:
-    runs-on: self-hosted  # This uses your registered runner
+    runs-on: self-hosted  # Your registered self-hosted runner (Windows)
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Deploy to D:/test
+        shell: pwsh  # Use PowerShell Core (or use `powershell` for Windows PowerShell)
         run: |
           if (-Not (Test-Path "D:\test")) {
             New-Item -ItemType Directory -Path "D:\test"
           }
-          Copy-Item -Path "dist\*" -Destination "D:\test" -Recurse -Force
+          Copy-Item -Path ".\dist\*"*
