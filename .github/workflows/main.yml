@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy to D:/test
-        shell: pwsh  # Use PowerShell Core (or use `powershell` for Windows PowerShell)
+        shell: powershell  # Use PowerShell Core (or use `powershell` for Windows PowerShell)
         run: |
           if (-Not (Test-Path "D:\test")) {
             New-Item -ItemType Directory -Path "D:\test"
